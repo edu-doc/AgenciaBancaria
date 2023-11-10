@@ -1,5 +1,9 @@
 package entitites;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class Account {
 
 	private static int idAccount = 1;
@@ -7,6 +11,8 @@ public class Account {
 	private int numAccount;
 	private Client client;
 	private Double balance = 0.0;
+	
+	private List<AccountMoviment> movements = new ArrayList<>();
 
 	public Account(Client client) {
 		this.numAccount = idAccount;
@@ -34,7 +40,7 @@ public class Account {
 		return balance;
 	}
 
-	public Double addBalance(Double balance) {
+	public Double depositBalance(Double balance) {
 		if (balance > 0) {
 			this.balance += balance;
 			System.out.println("Deposito realizado");
@@ -59,10 +65,22 @@ public class Account {
 		if (getBalance() >= value && value >0 && transferAccount != null) {
 			this.balance -= value;
 			
-			transferAccount.balance = transferAccount.addBalance(value);
+			transferAccount.balance = transferAccount.depositBalance(value);
 			System.out.println("Transferência realizada");
 		} else {
 			System.out.println("Erro na transferência");
+		}
+	}
+	
+	public void addAccountMoviment(AccountMoviment movement) {
+		if(movement != null) {
+			movements.add(movement);
+		}
+	}
+	
+	public void removeAccountMoviment(AccountMoviment movement) {
+		if (movement != null) {
+			movements.remove(movement);
 		}
 	}
 	
