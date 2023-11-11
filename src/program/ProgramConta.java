@@ -1,15 +1,17 @@
-package Program;
+package program;
+
+import entities.ContaCorrente;
+import entities.Titular;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import entitites.Account;
-import entitites.Client;
+import entities.Conta;
 
-public class ProgramAccount {
+public class ProgramConta {
 	static Scanner sc = new Scanner(System.in);
-	static List<Account> accountBank = new ArrayList<>();
+	static List<Conta> contaBancaria = new ArrayList<>();
 
 	public static void main(String[] args) {
 		menu();
@@ -66,22 +68,22 @@ public class ProgramAccount {
 		System.out.print("Digite o Email do cliente: ");
 		String email = sc.next();
 
-		Client client = new Client(name, cpf, email);
+		Titular titular = new Titular(name, email, cpf);
 
-		Account account = new Account(client);
+		ContaCorrente contaCorrente = new ContaCorrente(titular);
 
-		accountBank.add(account);
+		contaBancaria.add(contaCorrente);
 
 		menu();
 
 	}
 
-	static Account hasAccount(int idAccount) {
-		Account conta = null;
-		if (accountBank.size() > 0) {
+	static Conta hasAccount(int idConta) {
+		Conta conta = null;
+		if (contaBancaria.size() > 0) {
 
-			for (Account c : accountBank) {
-				if (c.getNumAccount() == idAccount) {
+			for (Conta c : contaBancaria) {
+				if (c.getNumero() == idConta) {
 					conta = c;
 				}
 			}
@@ -92,14 +94,14 @@ public class ProgramAccount {
 
 	static void deposit() {
 		System.out.print("Digite o número da conta: ");
-		int numAccount = sc.nextInt();
+		int numConta = sc.nextInt();
 
-		Account account = hasAccount(numAccount);
+		Conta conta = hasAccount(numConta);
 
-		if (account != null) {
+		if (conta != null) {
 			System.out.print("Qual valor quer depositar: ");
-			double deposit = sc.nextDouble();
-			account.depositBalance(deposit);
+			double deposito = sc.nextDouble();
+			conta.depositar(deposito);
 		} else {
 			System.out.println("Conta não encontrada");
 		}
@@ -110,14 +112,14 @@ public class ProgramAccount {
 
 	static void withdraw() {
 		System.out.print("Digite o número da conta: ");
-		int numAccount = sc.nextInt();
+		int numConta = sc.nextInt();
 
-		Account account = hasAccount(numAccount);
+		Conta conta = hasAccount(numConta);
 
-		if (account != null) {
+		if (conta != null) {
 			System.out.print("Qual valor quer retirar: ");
-			double withdraw = sc.nextDouble();
-			account.withdrawBalance(withdraw);
+			double retirar = sc.nextDouble();
+			conta.sacar(retirar);
 		} else {
 			System.out.println("Conta não encontrada");
 		}
@@ -127,20 +129,22 @@ public class ProgramAccount {
 
 	static void transfer() {
 		System.out.print("Digite o número da conta remetente: ");
-		int numAccount = sc.nextInt();
+		int numConta = sc.nextInt();
 
-		Account account = hasAccount(numAccount);
+		Conta conta = hasAccount(numConta);
 
-		if (account != null) {
+		if (conta != null) {
 			System.out.print("Qual valor quer transferir: ");
-			double transfer = sc.nextDouble();
+			double transferir = sc.nextDouble();
 			System.out.print("Qual número da conta que irá receber transferência: ");
-			int numTransfer = sc.nextInt();
+			int numTransferir = sc.nextInt();
+			
+			Conta contaReceber = hasAccount(numTransferir);
 
-			Account accountTransfer = hasAccount(numTransfer);
-			if (accountTransfer != null) {
-				if (account.getBalance() >= transfer) {
-					account.transfer(accountTransfer, transfer);
+			Conta contaTransferir = hasAccount(numTransferir);
+			if (contaTransferir != null) {
+				if (conta.getSaldo() >= transferir) {
+					conta.transferir(transferir, contaReceber);
 				}
 				
 			}
@@ -153,8 +157,8 @@ public class ProgramAccount {
 	}
 
 	static void listAccount() {
-		if (accountBank.size() > 0) {
-			for (Account c : accountBank) {
+		if (contaBancaria.size() > 0) {
+			for (Conta c : contaBancaria) {
 				System.out.println(c);
 			}
 		} else {
