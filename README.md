@@ -1,8 +1,28 @@
-# AgenciaBancaria
-Projeto ainda está em andamento.
+# Agência Bancaria
 
-Planejando adicionar algumas coisas e melhorar algumas classes. (Check)
+# 💡Sobre o projeto
 
-Trazer uma gravação em arquivo binario para persistir dados. Só para reutiliza-los.
+O Projeto é uma Agência Bancaria que fiz para utilizar e aprender alguns métodos do Java.
 
-Também trazer JOptionPane para fazer uma interfacezinha minima, para resumir o código. (Check)
+O intuito do projeto é mostrar algumas coisas que sei do Java puro, pretendo melhorar o projeto futuramente.
+
+# 💻Tecnologias utilizadas
+- Java
+
+# Como executar o projeto
+
+Pré-requisitos: Java,
+                IDE do seu gosto, recomendo Intellij.
+
+```bash
+# clonar repositório
+  git clone https://github.com/edu-doc/AgenciaBancaria
+
+# executar o projeto
+  ProgramAccount.java
+
+```
+
+# 🐺Programador
+
+Antonio Eduardo de Oliveira Carmo
