@@ -1,5 +1,6 @@
 package program;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,11 @@ import model.services.Transaction;
 public class ProgramAccount {
 	static List<Account> contaBancaria = new ArrayList<>();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		menu();
 	}
 
-	public static void menu() {
+	public static void menu() throws IOException {
 
 		Locale.setDefault(Locale.US);
 
@@ -58,7 +59,7 @@ public class ProgramAccount {
 		}
 	}
 
-	static void createAccount() {
+	static void createAccount() throws IOException {
 
 		String name = JOptionPane.showInputDialog("Digite o nome do cliente: ");
 
@@ -92,7 +93,7 @@ public class ProgramAccount {
 
 	}
 
-	static void deposit() {
+	static void deposit() throws IOException {
 
 		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
@@ -102,7 +103,7 @@ public class ProgramAccount {
 			if (conta != null) {
 				double deposito = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer depositar: "));
 				Transaction ht;
-				conta.deposit(deposito, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("DEPOSITAR")));
+				conta.deposit(deposito, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("DEPOSITO")));
 				conta.getDate().add(ht);
 				JOptionPane.showMessageDialog(null, "Deposito realizado com sucesso.");
 
@@ -115,7 +116,7 @@ public class ProgramAccount {
 
 	}
 
-	static void withdraw() {
+	static void withdraw() throws IOException {
 
 		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
@@ -125,7 +126,7 @@ public class ProgramAccount {
 			if (conta != null) {
 				double retirar = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer sacar: "));
 				Transaction ht;
-				conta.withdraw(retirar, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("SACAR")));
+				conta.withdraw(retirar, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("SAQUE")));
 				conta.getDate().add(ht);
 				JOptionPane.showMessageDialog(null, "Saque realizado com sucesso.");
 			}
@@ -136,7 +137,7 @@ public class ProgramAccount {
 		menu();
 	}
 
-	static void transfer() {
+	static void transfer() throws IOException {
 
 		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
@@ -157,7 +158,7 @@ public class ProgramAccount {
 					if (conta.getBalance() >= transferir) {
 						Transaction ht;
 						conta.transfer(transferir, contaReceber,
-								ht = new Transaction(LocalDate.now(), TransactionType.valueOf("TRANSFERIR")));
+								ht = new Transaction(LocalDate.now(), TransactionType.valueOf("TRANSFERENCIA")));
 						conta.getDate().add(ht);
 						JOptionPane.showMessageDialog(null, "Tansferência realizado com sucesso.");
 					}
@@ -172,7 +173,7 @@ public class ProgramAccount {
 
 	}
 
-	static void listAccount() {
+	static void listAccount() throws IOException {
 		if (contaBancaria.size() > 0) {
 			for (Account c : contaBancaria) {
 				JOptionPane.showMessageDialog(null, c);
@@ -183,7 +184,7 @@ public class ProgramAccount {
 		menu();
 	}
 
-	static void listAccountMoviment() {
+	static void listAccountMoviment() throws IOException {
 
 		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 

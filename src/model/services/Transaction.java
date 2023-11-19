@@ -32,7 +32,7 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
-		return this.date + " - " + this.type;
+		return getType() + " - " + getDate();
 	}
 	
 	

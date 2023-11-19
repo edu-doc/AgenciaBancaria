@@ -2,7 +2,7 @@ package model.entities.enu;
 
 public enum  TransactionType {
 
-	SACAR,
-	DEPOSITAR,
-	TRANSFERIR;
+	SAQUE,
+	DEPOSITO,
+	TRANSFERENCIA;
 }
