@@ -1,8 +1,8 @@
 # AgenciaBancaria
 Projeto ainda está em andamento.
 
-Planejando adicionar algumas coisas e melhorar algumas classes.
+Planejando adicionar algumas coisas e melhorar algumas classes. (Check)
 
 Trazer uma gravação em arquivo binario para persistir dados. Só para reutiliza-los.
 
-Também trazer JOptionPane para fazer uma interfacezinha minima, para resumir o código.
+Também trazer JOptionPane para fazer uma interfacezinha minima, para resumir o código. (Check)
