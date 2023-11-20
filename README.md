@@ -12,7 +12,7 @@ O intuito do projeto é mostrar algumas coisas que sei do Java puro, pretendo me
 # Como executar o projeto
 
 Pré-requisitos: Java,
-                IDE do seu gosto, recomendo Intellij.
+                IDE do seu gosto.
 
 ```bash
 # clonar repositório
