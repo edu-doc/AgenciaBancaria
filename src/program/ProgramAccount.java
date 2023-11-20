@@ -11,12 +11,14 @@ import javax.swing.JOptionPane;
 import model.entities.Account;
 import model.entities.CurrentAccount;
 import model.entities.Holder;
+import model.entities.SavingAccount;
+import model.entities.SpecialAccount;
 import model.entities.enu.TransactionType;
 import model.exception.AmountException;
 import model.services.Transaction;
 
 public class ProgramAccount {
-	static List<Account> contaBancaria = new ArrayList<>();
+	static List<Account> account = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		menu();
@@ -60,18 +62,30 @@ public class ProgramAccount {
 	}
 
 	static void createAccount() throws IOException {
-
+		
 		String name = JOptionPane.showInputDialog("Digite o nome do cliente: ");
 
 		String cpf = JOptionPane.showInputDialog("Digite o CPF do cliente: ");
 
 		String email = JOptionPane.showInputDialog("Digite o Email do cliente: ");
 
-		Holder titular = new Holder(name, email, cpf);
-
-		CurrentAccount contaCorrente = new CurrentAccount(titular);
-
-		contaBancaria.add(contaCorrente);
+		Holder holder = new Holder(name, email, cpf);
+		
+		char type = JOptionPane.showInputDialog("Digite o tipo de conta:\n"
+				+ "Corrente - c\n"
+				+ "Poupança - p\n"
+				+ "Especial - e").charAt(0);
+		
+		if(type == 'c') {
+			CurrentAccount currentAccount = new CurrentAccount(holder);
+			account.add(currentAccount);
+		} else if (type == 'p') {
+			SavingAccount savingAccount = new SavingAccount(holder);
+			account.add(savingAccount);
+		} else {
+			SpecialAccount specialAccount = new SpecialAccount(holder);
+			account.add(specialAccount);
+		}
 
 		JOptionPane.showMessageDialog(null, "Conta criada com sucesso.");
 
@@ -81,9 +95,9 @@ public class ProgramAccount {
 
 	static Account hasAccount(int idConta) {
 		Account conta = null;
-		if (contaBancaria.size() > 0) {
+		if (account.size() > 0) {
 
-			for (Account c : contaBancaria) {
+			for (Account c : account) {
 				if (c.getNum() == idConta) {
 					conta = c;
 				}
@@ -95,15 +109,15 @@ public class ProgramAccount {
 
 	static void deposit() throws IOException {
 
-		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
+		int numAccount = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
-		Account conta = hasAccount(numConta);
+		Account conta = hasAccount(numAccount);
 
 		try {
 			if (conta != null) {
-				double deposito = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer depositar: "));
+				double amount = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer depositar: "));
 				Transaction ht;
-				conta.deposit(deposito, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("DEPOSITO")));
+				conta.deposit(amount, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("DEPOSITO")));
 				conta.getDate().add(ht);
 				JOptionPane.showMessageDialog(null, "Deposito realizado com sucesso.");
 
@@ -118,15 +132,15 @@ public class ProgramAccount {
 
 	static void withdraw() throws IOException {
 
-		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
+		int numAccount = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
-		Account conta = hasAccount(numConta);
+		Account conta = hasAccount(numAccount);
 
 		try {
 			if (conta != null) {
-				double retirar = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer sacar: "));
+				double amount = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer sacar: "));
 				Transaction ht;
-				conta.withdraw(retirar, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("SAQUE")));
+				conta.withdraw(amount, ht = new Transaction(LocalDate.now(), TransactionType.valueOf("SAQUE")));
 				conta.getDate().add(ht);
 				JOptionPane.showMessageDialog(null, "Saque realizado com sucesso.");
 			}
@@ -139,25 +153,24 @@ public class ProgramAccount {
 
 	static void transfer() throws IOException {
 
-		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
+		int numAccount = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
-		Account conta = hasAccount(numConta);
+		Account conta = hasAccount(numAccount);
 
 		try {
 			if (conta != null) {
 
-				double transferir = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer transferir: "));
+				double amount = Double.parseDouble(JOptionPane.showInputDialog("Qual valor quer transferir: "));
 
-				int numTransferir = Integer
+				int numTransfer = Integer
 						.parseInt(JOptionPane.showInputDialog("Qual número da conta que irá receber transferência: "));
 
-				Account contaReceber = hasAccount(numTransferir);
+				Account accountReceive = hasAccount(numTransfer);
 
-				Account contaTransferir = hasAccount(numTransferir);
-				if (contaTransferir != null) {
-					if (conta.getBalance() >= transferir) {
+				if (accountReceive != null) {
+					if (conta.getBalance() >= amount) {
 						Transaction ht;
-						conta.transfer(transferir, contaReceber,
+						conta.transfer(amount, accountReceive,
 								ht = new Transaction(LocalDate.now(), TransactionType.valueOf("TRANSFERENCIA")));
 						conta.getDate().add(ht);
 						JOptionPane.showMessageDialog(null, "Tansferência realizado com sucesso.");
@@ -174,8 +187,8 @@ public class ProgramAccount {
 	}
 
 	static void listAccount() throws IOException {
-		if (contaBancaria.size() > 0) {
-			for (Account c : contaBancaria) {
+		if (account.size() > 0) {
+			for (Account c : account) {
 				JOptionPane.showMessageDialog(null, c);
 			}
 		} else {
@@ -186,17 +199,15 @@ public class ProgramAccount {
 
 	static void listAccountMoviment() throws IOException {
 
-		int numConta = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
+		int numAccount = Integer.parseInt(JOptionPane.showInputDialog("Digite o número da conta: "));
 
-		Account conta = hasAccount(numConta);
+		Account conta = hasAccount(numAccount);
 
 		if (conta != null) {
 			if (conta.getDate().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Não foi feita movimentações");
 			} else {
-				for (Account c : contaBancaria) {
-					JOptionPane.showMessageDialog(null, c.getDate());
-				}
+					JOptionPane.showMessageDialog(null, conta.getDate());
 			}
 
 		} else {
